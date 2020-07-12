@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,10 @@ import com.projects.alshell.vokaturi.VokaturiException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+import umairayub.madialog.MaDialog;
+import umairayub.madialog.MaDialogListener;
 
 import static com.projects.alshell.vokaturi.Vokaturi.logD;
 
@@ -80,6 +85,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageView imageViewInfo= findViewById(R.id.imageViewInfo);
+        imageViewInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new MaDialog.Builder(MainActivity.this)
+                        .setTitle("Detect your voice")
+                        .setMessage("This is only sample- reszte trzeba wymyslec  ")
+                        .setPositiveButtonText("ok")
+                        .setButtonOrientation(LinearLayout.HORIZONTAL)
+
+                        .setPositiveButtonListener(new MaDialogListener() {
+                            @Override
+                            public void onClick() {
+
+                            }
+                        })
+
+                        .build();
+            }
+        });
+
+
     }
 
     private void RuntimePermissions() {
@@ -114,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (VokaturiException exception) {
             //  Toast.makeText(getApplicationContext(),exception.getMessage(),Toast.LENGTH_LONG).show();
+            System.out.println(exception.getMessage() + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
         }
     }
@@ -138,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
           double  anger = emotionProbabilities.Anger;
           double  fear = emotionProbabilities.Fear;
 
-          System.out.println(fear+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
 
 
             emotionProbabilities.scaledValues(3);
@@ -162,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            //column wykres
+            //pyramid wykres
 
             AnyChartView anyChartView= alertDialog.findViewById(R.id.piechart);
 
@@ -170,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             double [] values= {neutrality,happiness,sadness,anger,fear};
 
 
-            Cartesian column= AnyChart.column();
+            Pyramid column= AnyChart.pyramid();
             List<DataEntry> dataEntries= new ArrayList<>();
             for(int i=0; i<moods.length; i++){
 
@@ -179,13 +208,10 @@ public class MainActivity extends AppCompatActivity {
 
             column.data(dataEntries);
             column.title(capturedEmotion.toString());
-
-
-
-          /*  pyramid.legend
+            column.legend()
                     .position("center-bottom")
                     .itemsLayout(LegendLayout.HORIZONTAL)
-                    .align(Align.CENTER);*/
+                    .align(Align.CENTER);
             anyChartView.setZoomEnabled(true);
 
             anyChartView.setChart(column);
@@ -210,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (VokaturiException exception) {
 
             System.out.println(exception.getMessage() + "#############################################");
-            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Try again. Please speak louder", Toast.LENGTH_LONG).show();
         }
 
 
