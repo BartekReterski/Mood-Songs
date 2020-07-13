@@ -3,9 +3,88 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#263238"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Neutral"
+            android:textColor="#f5f5f5"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Happy"
+            android:textColor="#f5f5f5"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Sad"
+            android:textColor="#f5f5f5"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Fearful"
+            android:textColor="#f5f5f5"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Angry"
+            android:textColor="#f5f5f5"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+
+            />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView"
@@ -14,6 +93,7 @@
         android:layout_marginTop="@dimen/_40sdp"
         android:gravity="center|center_horizontal"
         android:text="Record your voice and search song"
+        android:textColor="#f5f5f5"
         android:textSize="@dimen/_15sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_40sdp"
         android:text="Or select your mood manualy"
+        android:textColor="#f5f5f5"
         android:textSize="@dimen/_15sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +134,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
@@ -83,8 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/sad"
-            />
+            app:srcCompat="@drawable/sad" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -98,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/anger"/>
+            app:srcCompat="@drawable/anger" />
 
 
     </LinearLayout>
