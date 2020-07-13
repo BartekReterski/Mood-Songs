@@ -13,15 +13,14 @@
 
         <com.anychart.AnyChartView
             android:id="@+id/piechart"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_25sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:foregroundGravity="center"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/_300sdp"
+            android:layout_width="@dimen/_250sdp"
             android:layout_height="@dimen/_300sdp"
-            />
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:foregroundGravity="center" />
 
         <Button
             android:id="@+id/buttonOk"

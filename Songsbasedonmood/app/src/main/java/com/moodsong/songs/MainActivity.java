@@ -261,7 +261,6 @@ public class MainActivity extends AppCompatActivity {
                     .itemsLayout(LegendLayout.HORIZONTAL)
                     .align(Align.CENTER);
             anyChartView.setZoomEnabled(true);
-
             anyChartView.setChart(column);
 
 
