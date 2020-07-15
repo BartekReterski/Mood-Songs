@@ -50,9 +50,6 @@ public class HappySongActivity extends AppCompatActivity {
 //pobranie ilosci stron z ktorych przedstawiana jest dana playlista
     private void GetHappySongsPagination(){
 
-        int per_pages=3;
-        int page=100;
-        String genre="pop";
 
 
         try {

@@ -184,7 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/anger" />
+            app:srcCompat="@drawable/angry" />
 
 
     </LinearLayout>
