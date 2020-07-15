@@ -145,22 +145,25 @@
 
 
         <ImageView
+            android:id="@+id/imageNeutral"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
-            android:layout_weight="1"
 
+            android:layout_weight="1"
             app:srcCompat="@drawable/neutral" />
 
         <ImageView
+            android:id="@+id/imageHappy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
-            android:layout_weight="1"
 
+            android:layout_weight="1"
             app:srcCompat="@drawable/happy" />
 
         <ImageView
+            android:id="@+id/imageSad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
@@ -168,6 +171,7 @@
             app:srcCompat="@drawable/sad" />
 
         <ImageView
+            android:id="@+id/imageFear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
@@ -175,6 +179,7 @@
             app:srcCompat="@drawable/fear" />
 
         <ImageView
+            android:id="@+id/imageAngry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"

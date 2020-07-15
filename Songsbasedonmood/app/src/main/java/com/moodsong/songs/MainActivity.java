@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.moodsong.songs.activities.HappySongActivity;
 import com.projects.alshell.vokaturi.Emotion;
 import com.projects.alshell.vokaturi.EmotionProbabilities;
 import com.projects.alshell.vokaturi.Vokaturi;
@@ -113,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+        ApiImageCalls();
     }
 
 
@@ -157,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+//zadeklarowanie uprawnień
     private void RuntimePermissions() {
 
         PermissionListener permissionListener = new PermissionListener() {
@@ -173,9 +177,9 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
-        TedPermission.with(MainActivity.this)
+        TedPermission.with(getApplicationContext())
                 .setPermissionListener(permissionListener)
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO)
                 .check();
     }
 
@@ -218,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            emotionProbabilities.scaledValues(3);
+            emotionProbabilities.scaledValues(5);
             Emotion capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
             Toast.makeText(this, capturedEmotion.toString(), Toast.LENGTH_LONG).show();
 
@@ -290,5 +294,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+   private void ApiImageCalls(){
+
+        ImageView imageNeutral= findViewById(R.id.imageNeutral);
+        ImageView imageHappy= findViewById(R.id.imageHappy);
+        ImageView imageSad= findViewById(R.id.imageSad);
+        ImageView imageAngry= findViewById(R.id.imageAngry);
+        ImageView imageFear= findViewById(R.id.imageFear);
+
+
+
+        imageNeutral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+       imageHappy.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+
+               Intent intent= new Intent(getApplicationContext(), HappySongActivity.class);
+               startActivity(intent);
+           }
+       });
+
+       imageSad.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+           }
+       });
+
+       imageAngry.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+           }
+       });
+
+       imageFear.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+           }
+       });
+   }
 
 }
