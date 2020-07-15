@@ -27,45 +27,59 @@ import retrofit2.Response;
 
 public class HappySongActivity extends AppCompatActivity {
 
+
+    int randomResult;
+
+    //intent z MainActivity-> przesłanie danych z formularza -> a nastepnie przeslanie ich do GetHappySongInfo wraz z randomResult zamiast per_pages
+
+    int per_pages=3;
+    int page=100;
+    String genre="pop";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_happy_song_layout);
 
 
-        GetHappySongsInfo();
+        GetHappySongsPagination();
 
     }
 
 
+//pobranie ilosci stron z ktorych przedstawiana jest dana playlista
+    private void GetHappySongsPagination(){
 
-    private void GetHappySongsInfo(){
+        int per_pages=3;
+        int page=100;
+        String genre="pop";
+
 
         try {
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
 
-            Call<Example> call = songsApi.getSongsExample();
+            Call<Example> call = songsApi.getSongsExamplePagination(3,100,"pop","pSKPIAPwGJmfkjDXBTAF","xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz");
 
             call.enqueue(new Callback<Example>() {
                 @Override
                 public void onResponse(Call<Example> call, Response<Example> response) {
 
                     if(response.isSuccessful()){
-                        Toast.makeText(getBaseContext(), "OK"+response.message(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(), "OK"+response.message(), Toast.LENGTH_LONG).show();
                         if(response.body()!=null){
 
                             Example example= response.body();
 
                             TextView sampleText=findViewById(R.id.sampleText);
                             //String perPages= String.valueOf(example.getPagination().getPages());
-                            //generowanie losowej strony w pagination
 
+                            //generowanie losowej strony w pagination
                             Random r = new Random();
                             int low = 1;
                             int high = example.getPagination().getPages();
-                            int result = r.nextInt(high-low) + low;
-                            sampleText.setText(String.valueOf(result));
+                            randomResult = r.nextInt(high-low) + low;
+                            sampleText.setText(String.valueOf(randomResult));
                         }
                     }
 
@@ -82,6 +96,15 @@ public class HappySongActivity extends AppCompatActivity {
 
             Toast.makeText(this,"Something was wrong"+ex.getMessage(),Toast.LENGTH_SHORT).show();
         }
+
+
+    }
+
+
+    private void  GetHappySongInfo(){
+
+
+
 
 
     }

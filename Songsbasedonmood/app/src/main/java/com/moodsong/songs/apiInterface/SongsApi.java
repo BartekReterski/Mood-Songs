@@ -13,6 +13,9 @@ import retrofit2.http.Query;
 
 public interface SongsApi {
 
-    @GET("/database/search?per_page=3&page=2&genre=pop&key=pSKPIAPwGJmfkjDXBTAF&secret=xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz")
-    Call<Example> getSongsExample();
+    @GET("/database/search")
+    Call<Example> getSongsExamplePagination(@Query("per_page") Integer per_page, @Query("page") Integer page, @Query("genre") String genre, @Query("key") String key, @Query("secret") String secret);
+
+    @GET("/database/search?{per_page}&{page}&{genre}&key=pSKPIAPwGJmfkjDXBTAF&secret=xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz")
+    Call<Example> getSongsExampleInfo();
 }
