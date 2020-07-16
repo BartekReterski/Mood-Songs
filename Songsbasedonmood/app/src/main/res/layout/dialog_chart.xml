@@ -27,10 +27,11 @@
             android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+
             android:layout_marginTop="15dp"
             android:background="@drawable/button_background"
             android:text="Search song by your mood"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="#f5f5f5" />
 
     </LinearLayout>
 

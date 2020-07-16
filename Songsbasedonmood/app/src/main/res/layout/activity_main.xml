@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="#263238"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
 
     <LinearLayout
@@ -137,7 +137,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="@dimen/_40sdp"
         android:orientation="horizontal"
         android:weightSum="5"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
@@ -148,7 +148,7 @@
             android:id="@+id/imageNeutral"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4sp"
+            android:layout_marginLeft="@dimen/_3sdp"
 
             android:layout_weight="1"
             app:srcCompat="@drawable/neutral" />
@@ -157,8 +157,6 @@
             android:id="@+id/imageHappy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4sp"
-
             android:layout_weight="1"
             app:srcCompat="@drawable/happy" />
 
@@ -166,7 +164,6 @@
             android:id="@+id/imageSad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4sp"
             android:layout_weight="1"
             app:srcCompat="@drawable/sad" />
 
@@ -174,7 +171,6 @@
             android:id="@+id/imageFear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4sp"
             android:layout_weight="1"
             app:srcCompat="@drawable/fear" />
 
@@ -182,7 +178,7 @@
             android:id="@+id/imageAngry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4sp"
+            android:layout_marginRight="@dimen/_3sdp"
             android:layout_weight="1"
             app:srcCompat="@drawable/angry" />
 
