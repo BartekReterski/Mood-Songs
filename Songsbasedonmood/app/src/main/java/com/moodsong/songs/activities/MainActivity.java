@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
+ /*   @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu, menu);
@@ -145,15 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
-
-
-
-
-
-
+*/
 
 //zadeklarowanie uprawnień
     private void RuntimePermissions() {

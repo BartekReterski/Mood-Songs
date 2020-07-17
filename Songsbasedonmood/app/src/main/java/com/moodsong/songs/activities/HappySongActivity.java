@@ -4,6 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,9 +41,6 @@ public class HappySongActivity extends AppCompatActivity {
     public  static  final  String KEY= "pSKPIAPwGJmfkjDXBTAF";
     public  static  final  String SECRET= "xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz";
 
-    private HappySongAdapter happySongAdapter;
-    private RecyclerView recyclerView;
-   private ArrayList<Result> songList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +48,59 @@ public class HappySongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_happy_song_layout);
 
 
+        InternetConnectionCheck();
         GetHappySongsPagination();
         GetHappySongInfo();
 
     }
 
 
-//pobranie ilosci stron z ktorych przedstawiana jest dana playlista
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+// wlasciwe sprawdzanie polacznie z internetem
+    public void InternetConnectionCheck() {
+        if (haveNetworkConnection()) {
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+
+        } else {
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("No internet connection");
+            alertDialogBuilder.setMessage("Please check your internet connection");
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    //Toast.makeText(MainActivity.this,"No Internet Connection",Toast.LENGTH_LONG).show();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        }
+    }
+
+
+    //pobranie ilosci stron z ktorych przedstawiana jest dana playlista
     private void GetHappySongsPagination(){
 
 
@@ -66,11 +115,11 @@ public class HappySongActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Example> call, Response<Example> response) {
 
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         //Toast.makeText(getBaseContext(), "OK"+response.message(), Toast.LENGTH_LONG).show();
-                        if(response.body()!=null){
+                        if (response.body() != null) {
 
-                            Example example= response.body();
+                            Example example = response.body();
 
                             //String perPages= String.valueOf(example.getPagination().getPages());
 
@@ -78,7 +127,7 @@ public class HappySongActivity extends AppCompatActivity {
                             Random r = new Random();
                             int low = 1;
                             int high = example.getPagination().getPages();
-                            randomResultPages = r.nextInt(high-low) + low;
+                            randomResultPages = r.nextInt(high - low) + low;
 
 
 
@@ -89,7 +138,6 @@ public class HappySongActivity extends AppCompatActivity {
 
 
                 }
-
                 @Override
                 public void onFailure(Call<Example> call, Throwable t) {
 
@@ -109,31 +157,44 @@ public class HappySongActivity extends AppCompatActivity {
 
 
         try{
+            final AlertDialog alertDialog = new SpotsDialog.Builder()
+                    .setContext(HappySongActivity.this)
+                    .build();
+            alertDialog.setMessage("Loading suggestion list");
+            alertDialog.setCancelable(false);
+            alertDialog.show();
 
+            RecyclerView recyclerView= findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            final HappySongAdapter happySongAdapter= new HappySongAdapter(HappySongActivity.this);
+
+            recyclerView.setAdapter(happySongAdapter);
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
-            Call<Example> call= songsApi.getSongsExampleInfo(3,randomResultPages,"pop",KEY,SECRET);
+            Call<Example> call =songsApi.getSongsExampleInfo(3,101,"pop",KEY,SECRET);
 
-          call.enqueue(new Callback<Example>() {
-              @Override
-              public void onResponse(Call<Example> call, Response<Example> response) {
-
-                  Example example= response.body();
+            call.enqueue(new Callback<Example>() {
+                @Override
+                public void onResponse(Call<Example> call, Response<Example> response) {
 
 
-                  songList= new ArrayList<>(response.body());
-                  recyclerView = findViewById(R.id.recyclerView);
-                  RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HappySongActivity.this);
-                  recyclerView.setLayoutManager(layoutManager);
-                  happySongAdapter= new HappySongAdapter(example)
-              }
+                    if(response.isSuccessful()& response.body()!=null){
 
-              @Override
-              public void onFailure(Call<Example> call, Throwable t) {
+                        List<Result> list= response.body().getResults();
+                        happySongAdapter.addResult(list);
+                        alertDialog.dismiss();
+                    }
 
-                  Toast.makeText(getBaseContext(), "Server Error- Couldn't load data, Please try again"+t.getMessage(), Toast.LENGTH_LONG).show();
-              }
-          });
+                }
+
+                @Override
+                public void onFailure(Call<Example> call, Throwable t) {
+
+                    alertDialog.dismiss();
+                    Toast.makeText(getBaseContext(), "Server Error- Couldn't load data, Please try again"+t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
 
 
         }catch (Exception ex){
@@ -145,21 +206,5 @@ public class HappySongActivity extends AppCompatActivity {
 
     }
 
-    private void loadDataList(List<Result> songList) {
-
-//Get a reference to the RecyclerView//
-
-        recyclerView = findViewById(R.id.recyclerView);
-        happySongAdapter = new HappySongAdapter(songList);
-
-//Use a LinearLayoutManager with default vertical orientation//
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HappySongActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-
-//Set the Adapter to the RecyclerView//
-
-        recyclerView.setAdapter(happySongAdapter);
-    }
 
 }
