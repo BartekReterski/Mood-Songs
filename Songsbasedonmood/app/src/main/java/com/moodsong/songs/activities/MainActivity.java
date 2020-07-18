@@ -13,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.anychart.AnyChart;
@@ -304,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
            public void onClick(View v) {
 
 
+              // HappySpinnerFunction();
                Intent intent= new Intent(getApplicationContext(), HappySongActivity.class);
                startActivity(intent);
            }
@@ -329,6 +332,30 @@ public class MainActivity extends AppCompatActivity {
 
            }
        });
+   }
+
+
+
+   private void HappySpinnerFunction(){
+
+
+       ViewGroup viewGroup = findViewById(android.R.id.content);
+
+       View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_happy, viewGroup, false);
+
+       AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+       builder.setView(dialogView);
+       AlertDialog alertDialog = builder.create();
+       alertDialog.show();
+
+
+       Spinner NumberOfTrack= alertDialog.findViewById(R.id.spinnerNumberofTracks);
+
+       Integer [] items= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25};
+       ArrayAdapter<Integer> arrayAdapter= new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item,items);
+       NumberOfTrack.setAdapter(arrayAdapter);
+
    }
 
 }

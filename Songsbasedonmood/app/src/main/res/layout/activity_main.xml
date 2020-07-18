@@ -115,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_40sdp"
-        android:text="Or select your mood manualy"
+        android:text="Or select your mood manually"
         android:textColor="#f5f5f5"
         android:textSize="@dimen/_15sdp"
         android:textStyle="bold"
