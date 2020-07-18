@@ -58,8 +58,8 @@
                 android:paddingLeft="@dimen/_12sdp"
                 android:paddingRight="@dimen/_12sdp"
                 android:text="Pop/J-Pop"
-                android:textColor="#f5f5f5"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:textColor="@color/colorBlack"
                 android:textStyle="bold" />
 
             <TextView
@@ -94,7 +94,6 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_toEndOf="@id/youtubeIcon"
                 android:src="@drawable/spotify" />
-
 
 
         </RelativeLayout>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -32,14 +33,14 @@ import retrofit2.Response;
 public class HappySongActivity extends AppCompatActivity {
 
 
-    int randomResultPages;
+    int randomResult1;
 
     //intent z MainActivity-> przesłanie danych z formularza -> a nastepnie przeslanie ich do GetHappySongInfo wraz z randomResult zamiast per_pages
-    int per_pages=3;
-    int page=100;
-    String genre="pop";
+
     public  static  final  String KEY= "pSKPIAPwGJmfkjDXBTAF";
     public  static  final  String SECRET= "xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz";
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String TEXT ="test";
 
 
     @Override
@@ -72,7 +73,7 @@ public class HappySongActivity extends AppCompatActivity {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-// wlasciwe sprawdzanie polacznie z internetem
+    // wlasciwe sprawdzanie polacznie z internetem
     public void InternetConnectionCheck() {
         if (haveNetworkConnection()) {
 
@@ -109,7 +110,7 @@ public class HappySongActivity extends AppCompatActivity {
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
 
-            Call<Example> call = songsApi.getSongsExamplePagination(3,100,"pop",KEY,SECRET);
+            Call<Example> call = songsApi.getSongsExamplePagination(25,"pop",KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override
@@ -127,8 +128,14 @@ public class HappySongActivity extends AppCompatActivity {
                             Random r = new Random();
                             int low = 1;
                             int high = example.getPagination().getPages();
-                            randomResultPages = r.nextInt(high - low) + low;
+                            randomResult1 = r.nextInt(high - low) + low;
 
+
+                            SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+                            SharedPreferences.Editor editor= sharedPreferences.edit();
+
+                            editor.putInt(TEXT,randomResult1);
+                            editor.apply();
 
 
 
@@ -164,6 +171,11 @@ public class HappySongActivity extends AppCompatActivity {
             alertDialog.setCancelable(false);
             alertDialog.show();
 
+
+            SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+            int randomResult2=sharedPreferences.getInt(TEXT,0);
+
+
             RecyclerView recyclerView= findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             final HappySongAdapter happySongAdapter= new HappySongAdapter(HappySongActivity.this);
@@ -171,7 +183,7 @@ public class HappySongActivity extends AppCompatActivity {
             recyclerView.setAdapter(happySongAdapter);
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
-            Call<Example> call =songsApi.getSongsExampleInfo(3,101,"pop",KEY,SECRET);
+            Call<Example> call =songsApi.getSongsExampleInfo(25,randomResult2,"pop",KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override

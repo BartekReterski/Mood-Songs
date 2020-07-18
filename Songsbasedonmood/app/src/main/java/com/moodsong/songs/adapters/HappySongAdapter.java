@@ -74,8 +74,35 @@ public class HappySongAdapter extends RecyclerView.Adapter<HappySongAdapter.Cust
 
     public void onBindViewHolder(CustomViewHolder holder, final int position) {
         holder.songTite.setText(dataList.get(position).getTitle());
-        holder.songYear.setText(String.valueOf(dataList.get(position).getYear()));
-     //   holder.songGenreandStyle.setText(dataList.get(position).getGenre()+"/"+dataList.get(position).getStyle());
+
+//sprawdzanie czy jest null i ukrywanie go
+        if(holder.songYear.getText().toString().equals("null") || holder.songYear.getText().toString().isEmpty()){
+
+            holder.songYear.setVisibility(View.GONE);
+        }else {
+            holder.songYear.setText(String.valueOf(dataList.get(position).getYear()));
+
+        }
+
+// przekonwertowanie listy stringow na obiekty
+
+        StringBuilder allStringGenres= new StringBuilder();
+        List<String> genres= dataList.get(position).getGenre();
+        for(int i=0; i<genres.size(); i++){
+
+            allStringGenres.append(genres.get(i));
+            if(i<genres.size() -1) allStringGenres.append(",");
+        }
+
+        StringBuilder allStringStyles= new StringBuilder();
+        List<String> styles= dataList.get(position).getStyle();
+        for(int i=0; i<styles.size(); i++){
+
+            allStringStyles.append(styles.get(i));
+            if(i<styles.size() -1) allStringStyles.append(",");
+        }
+
+        holder.songGenreandStyle.setText(allStringGenres.toString()+"/"+allStringStyles.toString());
 
         Picasso.get().load(dataList.get(position).getThumb()).into(holder.songThumb);
 
