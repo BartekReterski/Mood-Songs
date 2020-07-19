@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,13 +35,17 @@ import com.projects.alshell.vokaturi.Emotion;
 import com.projects.alshell.vokaturi.EmotionProbabilities;
 import com.projects.alshell.vokaturi.Vokaturi;
 import com.projects.alshell.vokaturi.VokaturiException;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+
+import es.dmoral.toasty.Toasty;
 import umairayub.madialog.MaDialog;
 import umairayub.madialog.MaDialogListener;
+
 
 import static com.projects.alshell.vokaturi.Vokaturi.logD;
 
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
             vokaturi = Vokaturi.getInstance(getApplicationContext());
             vokaturi.startListeningForSpeech();
+            Toasty.info(MainActivity.this, "Please speak and when you finish, press pause button", Toast.LENGTH_SHORT, true).show();
 
 
         } catch (VokaturiException exception) {
@@ -212,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
             emotionProbabilities.scaledValues(5);
             Emotion capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
-            Toast.makeText(this, capturedEmotion.toString(), Toast.LENGTH_LONG).show();
+       //     Toast.makeText(this, capturedEmotion.toString(), Toast.LENGTH_LONG).show();
 
 
 
@@ -306,9 +312,9 @@ public class MainActivity extends AppCompatActivity {
            public void onClick(View v) {
 
 
-              // HappySpinnerFunction();
-               Intent intent= new Intent(getApplicationContext(), HappySongActivity.class);
-               startActivity(intent);
+               HappySpinnerFunction();
+              /* Intent intent= new Intent(getApplicationContext(), HappySongActivity.class);
+               startActivity(intent);*/
            }
        });
 
@@ -350,11 +356,30 @@ public class MainActivity extends AppCompatActivity {
        alertDialog.show();
 
 
-       Spinner NumberOfTrack= alertDialog.findViewById(R.id.spinnerNumberofTracks);
 
+       //numberOfPropositionsSpinner
+       SearchableSpinner NumberOfTrack= alertDialog.findViewById(R.id.spinnerPropositionPerPage);
+       NumberOfTrack.setTitle("Set number of propositions on page");
        Integer [] items= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25};
        ArrayAdapter<Integer> arrayAdapter= new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item,items);
        NumberOfTrack.setAdapter(arrayAdapter);
+
+       NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                   String selectedValue= parent.getItemAtPosition(position).toString();
+                 //  Toast.makeText(MainActivity.this,selectedValue,Toast.LENGTH_LONG).show();
+
+
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+
+           }
+       });
 
    }
 

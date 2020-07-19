@@ -1,135 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#263238"
-    tools:context=".activities.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:gravity="center|center_horizontal"
-        android:text="Set configuration for your search"
-        android:textColor="#f5f5f5"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/spinnerGenre"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:text="Genre"
-        android:textColor="#f5f5f5"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:orientation="vertical"
+        android:padding="@dimen/_14sdp">
 
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Style"
-        android:textColor="#f5f5f5"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerGenre" />
-
-    <Spinner
-        android:id="@+id/spinnerStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:text="Set configuration for your search"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
 
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Year"
-        android:textColor="#f5f5f5"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerStyle" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Genre"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold">
 
-    <Spinner
-        android:id="@+id/spinnerYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        </TextView>
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spinnerGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"/>
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:text="Set number of tracks (max 25)"
-        android:textColor="#f5f5f5"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerYear" />
 
-    <Spinner
-        android:id="@+id/spinnerNumberofTracks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginTop="@dimen/_20sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:text="Style"
+            android:layout_marginTop="@dimen/_5sdp"/>
 
-    <Button
-        android:id="@+id/buttonShow"
-        android:layout_width="@dimen/_200sdp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/button_background"
-        android:text="Search song by your mood"
-        android:textColor="#f5f5f5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerNumberofTracks" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:text="Release year"
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spinnerYear"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:text="Set number of propositions"
+            android:layout_marginTop="@dimen/_5sdp"/>
+
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spinnerPropositionPerPage"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/buttonOk"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/button_background"
+            android:text="Search"
+            android:textColor="#f5f5f5" />
+
+    </LinearLayout>
+
+</LinearLayout>
