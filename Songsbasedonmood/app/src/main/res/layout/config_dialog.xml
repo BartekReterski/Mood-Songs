@@ -43,21 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="Style"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold" />
-
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-            android:id="@+id/spinnerStyle"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
             android:text="Release year"
             android:textColor="@color/colorBlack"
             android:textStyle="bold" />
@@ -83,7 +68,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/buttonOk"
+            android:id="@+id/buttonSearch"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

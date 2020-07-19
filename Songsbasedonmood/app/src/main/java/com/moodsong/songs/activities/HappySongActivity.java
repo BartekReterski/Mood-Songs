@@ -108,9 +108,20 @@ public class HappySongActivity extends AppCompatActivity {
 
         try {
 
+
+
+            String nrTracks = getIntent().getStringExtra("NumberofTracks");
+            String genre = getIntent().getStringExtra("Genre");
+            String year = getIntent().getStringExtra("Year");
+
+            Toast.makeText(this,nrTracks+genre+year,Toast.LENGTH_LONG).show();
+
+
+
+
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
 
-            Call<Example> call = songsApi.getSongsExamplePagination(25,"pop",KEY,SECRET);
+            Call<Example> call = songsApi.getSongsExamplePagination(25,2019,"pop",KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override
@@ -183,7 +194,7 @@ public class HappySongActivity extends AppCompatActivity {
             recyclerView.setAdapter(happySongAdapter);
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
-            Call<Example> call =songsApi.getSongsExampleInfo(25,randomResult2,"pop",KEY,SECRET);
+            Call<Example> call =songsApi.getSongsExampleInfo(25,2019,randomResult2,"pop",KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override

@@ -104,7 +104,16 @@ public class HappySongAdapter extends RecyclerView.Adapter<HappySongAdapter.Cust
 
         holder.songGenreandStyle.setText(allStringGenres.toString()+"/"+allStringStyles.toString());
 
-        Picasso.get().load(dataList.get(position).getThumb()).into(holder.songThumb);
+        if(dataList.get(position).getThumb().isEmpty()){
+
+            holder.songThumb.setImageResource(R.drawable.noimage);
+        }else{
+
+            Picasso.get().load(dataList.get(position).getThumb()).into(holder.songThumb);
+
+        }
+
+
 
 
         holder.youtubeIcon.setOnClickListener(new View.OnClickListener() {
