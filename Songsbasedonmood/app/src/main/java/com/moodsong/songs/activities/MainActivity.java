@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     Vokaturi vokaturi;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageView imageViewInfo= findViewById(R.id.imageViewInfo);
+        ImageView imageViewInfo = findViewById(R.id.imageViewInfo);
         imageViewInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                         .build();
             }
         });
-
 
 
         ApiImageCalls();
@@ -154,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 */
 
-//zadeklarowanie uprawnień
+    //zadeklarowanie uprawnień
     private void RuntimePermissions() {
 
         PermissionListener permissionListener = new PermissionListener() {
@@ -172,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
         TedPermission.with(getApplicationContext())
                 .setPermissionListener(permissionListener)
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO)
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
                 .check();
     }
 
@@ -207,21 +205,16 @@ public class MainActivity extends AppCompatActivity {
             logD("Fear: " + emotionProbabilities.Fear);
 
 
-          double  neutrality = emotionProbabilities.Neutrality;
-          double  happiness = emotionProbabilities.Happiness;
-          double  sadness = emotionProbabilities.Sadness;
-          double  anger = emotionProbabilities.Anger;
-          double  fear = emotionProbabilities.Fear;
-
-
+            double neutrality = emotionProbabilities.Neutrality;
+            double happiness = emotionProbabilities.Happiness;
+            double sadness = emotionProbabilities.Sadness;
+            double anger = emotionProbabilities.Anger;
+            double fear = emotionProbabilities.Fear;
 
 
             emotionProbabilities.scaledValues(5);
             Emotion capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
-       //     Toast.makeText(this, capturedEmotion.toString(), Toast.LENGTH_LONG).show();
-
-
-
+            //     Toast.makeText(this, capturedEmotion.toString(), Toast.LENGTH_LONG).show();
 
 
             ViewGroup viewGroup = findViewById(android.R.id.content);
@@ -235,21 +228,19 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.show();
 
 
-
-
             //pyramid wykres
 
-            AnyChartView anyChartView= alertDialog.findViewById(R.id.piechart);
+            AnyChartView anyChartView = alertDialog.findViewById(R.id.piechart);
 
-            String[] moods={"Neutrality","Happiness","Sadness","Anger","Fear"};
-            double [] values= {neutrality,happiness,sadness,anger,fear};
+            String[] moods = {"Neutrality", "Happiness", "Sadness", "Anger", "Fear"};
+            double[] values = {neutrality, happiness, sadness, anger, fear};
 
 
-            Pyramid column= AnyChart.pyramid();
-            List<DataEntry> dataEntries= new ArrayList<>();
-            for(int i=0; i<moods.length; i++){
+            Pyramid column = AnyChart.pyramid();
+            List<DataEntry> dataEntries = new ArrayList<>();
+            for (int i = 0; i < moods.length; i++) {
 
-                dataEntries.add(new ValueDataEntry(moods[i],values[i]));
+                dataEntries.add(new ValueDataEntry(moods[i], values[i]));
             }
 
             column.data(dataEntries);
@@ -262,8 +253,6 @@ public class MainActivity extends AppCompatActivity {
             anyChartView.setChart(column);
 
 
-
-
             Button buttonOK = alertDialog.findViewById(R.id.buttonOk);
             buttonOK.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -271,11 +260,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "dasdsadsdsa", Toast.LENGTH_LONG).show();
                 }
             });
-
-
-
-
-
 
 
         } catch (VokaturiException exception) {
@@ -288,16 +272,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void ApiImageCalls() {
 
-
-   private void ApiImageCalls(){
-
-        ImageView imageNeutral= findViewById(R.id.imageNeutral);
-        ImageView imageHappy= findViewById(R.id.imageHappy);
-        ImageView imageSad= findViewById(R.id.imageSad);
-        ImageView imageAngry= findViewById(R.id.imageAngry);
-        ImageView imageFear= findViewById(R.id.imageFear);
-
+        ImageView imageNeutral = findViewById(R.id.imageNeutral);
+        ImageView imageHappy = findViewById(R.id.imageHappy);
+        ImageView imageSad = findViewById(R.id.imageSad);
+        ImageView imageAngry = findViewById(R.id.imageAngry);
+        ImageView imageFear = findViewById(R.id.imageFear);
 
 
         imageNeutral.setOnClickListener(new View.OnClickListener() {
@@ -307,80 +288,223 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       imageHappy.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        imageHappy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
 
-               HappySpinnerFunction();
-              /* Intent intent= new Intent(getApplicationContext(), HappySongActivity.class);
-               startActivity(intent);*/
-           }
-       });
+               // HappySpinnerFunction();
+               Intent intent= new Intent(getApplicationContext(), HappySongActivity.class);
+               startActivity(intent);
+            }
+        });
 
-       imageSad.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        imageSad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-           }
-       });
+            }
+        });
 
-       imageAngry.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        imageAngry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-           }
-       });
+            }
+        });
 
-       imageFear.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+        imageFear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-           }
-       });
-   }
-
-
-
-   private void HappySpinnerFunction(){
+            }
+        });
+    }
 
 
-       ViewGroup viewGroup = findViewById(android.R.id.content);
-
-       View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_happy, viewGroup, false);
-
-       AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-       builder.setView(dialogView);
-       AlertDialog alertDialog = builder.create();
-       alertDialog.show();
+    private void HappySpinnerFunction() {
 
 
+        ViewGroup viewGroup = findViewById(android.R.id.content);
 
-       //numberOfPropositionsSpinner
-       SearchableSpinner NumberOfTrack= alertDialog.findViewById(R.id.spinnerPropositionPerPage);
-       NumberOfTrack.setTitle("Set number of propositions on page");
-       Integer [] items= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25};
-       ArrayAdapter<Integer> arrayAdapter= new ArrayAdapter<Integer>(this,android.R.layout.simple_spinner_item,items);
-       NumberOfTrack.setAdapter(arrayAdapter);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_happy, viewGroup, false);
 
-       NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-           @Override
-           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
 
-                   String selectedValue= parent.getItemAtPosition(position).toString();
-                 //  Toast.makeText(MainActivity.this,selectedValue,Toast.LENGTH_LONG).show();
+        //numberOfPropositionsSpinner
+        SearchableSpinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
+        NumberOfTrack.setTitle("Set number of propositions on page");
+        Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
+        NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
+
+        NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-           }
+                String selectedValue = parent.getItemAtPosition(position).toString();
+                //  Toast.makeText(MainActivity.this,selectedValue,Toast.LENGTH_LONG).show();
 
-           @Override
-           public void onNothingSelected(AdapterView<?> parent) {
 
-           }
-       });
+            }
 
-   }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+
+        //yearSpinner
+        SearchableSpinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
+        yearSpinner.setTitle("Set release year");
+        Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960, 1959, 1958, 1957, 1956, 1955, 1954, 1953, 1952, 1951, 1950, 1949, 1948, 1947, 1946, 1945, 1944, 1943, 1942, 1941, 1940, 1939, 1938, 1937, 1936, 1935, 1934, 1933, 1932, 1931, 1930};
+        ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, itemsYear);
+        yearSpinner.setAdapter(arrayAdapterYear);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                String selectedValue = parent.getItemAtPosition(position).toString();
+                //  Toast.makeText(MainActivity.this,selectedValue,Toast.LENGTH_LONG).show();
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //Genre
+        SearchableSpinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
+        genreSpinner.setTitle("Set genre");
+        String[] itemsGenre = {"Pop", "Electronic", "Funk/Soul"};
+        final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemsGenre);
+        genreSpinner.setAdapter(arrayAdapterGenre);
+
+
+        genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedValue = parent.getItemAtPosition(position).toString();
+
+
+                //Style
+                SearchableSpinner styleSpinner = alertDialog.findViewById(R.id.spinnerStyle);
+                styleSpinner.setTitle("Set style");
+                String[] itemsStylePop = {"Ballad", "Barbershop", "Bollywood", "Break-In", "Bubblegum", "Chanson", "Enka", "Ethno-pop", "Europop", "Indie Pop", "J-pop", "K-pop", "Karaoke", "Kayōkyoku", "Levenslied", "Light Music", "Music Hall", "Néo Kyma", "Novelty", "Parody", "Schlager", "Vocal"};
+                String[] itemsStyleElectronic = {"Abstract", "Acid", "Acid House", "Acid Jazz", "Ambient", "Ballroom", "Baltimore Club", "Bassline", "Beatdown", "Berlin-School", "Big Beat", "Breakbeat", "Breakcore", "Breaks", "Broken Beat", "Chillwave", "Chiptune", "Dance-pop", "Dark Ambient", "Darkwave", "Deep House", "Deep Techno", "Disco", "Disco Polo", "Donk", "Doomcore", "Downtempo", "Drone", "Drum n Bass", "Dub", "Dub Techno", "Dubstep", "Dungeon Synth", "EBM", "Electro", "Electro House", "Electroclash", "Euro House", "Euro-Disco", "Eurobeat", "Eurodance", "Experimental", "Freestyle", "Funkot", "Future Jazz", "Gabber", "Garage House", "Ghetto", "Ghetto House", "Ghettotech", "Glitch", "Goa Trance", "Grime", "Hands Up", "Happy Hardcore", "Hard Beat", "Hard House", "Hard Techno", "Hard Trance", "Hardcore", "Hardstyle", "Harsh Noise Wall", "Hi NRG", "Hip Hop", "Hip-House", "House", "IDM", "Illbient", "Industrial", "Italo House", "Italo-Disco", "Italodance", "J-Core", "Jazzdance", "Juke", "Jumpstyle", "Jungle", "Latin", "Leftfield", "Lento Violento", "Makina", "Minimal", "Minimal Techno", "Modern Classical", "Musique Concrète", "Neo Trance", "Neofolk", "Nerdcore Techno", "New Age", "New Beat", "New Wave", "Noise", "Nu-Disco", "Power Electronics", "Progressive Breaks", "Progressive House", "Progressive Trance", "Psy-Trance", "Rhythmic Noise", "Schranz", "Skweee", "Sound Collage", "Speed Garage", "Speedcore", "Synth-pop", "Synthwave", "Tech House", "Tech Trance", "Techno", "Trance", "Tribal", "Tribal House", "Trip Hop", "Tropical House", "UK Funky", "UK Garage", "Vaporwave", "Witch House"};
+                String[] itemsStyleFunkSoul = {"Afrobeat", "Bayou Funk", "Boogie", "Contemporary R&B", "Disco", "Free Funk", "Funk", "Gogo", "Gospel", "Minneapolis Sound", "Neo Soul", "New Jack Swing", "P.Funk", "Psychedelic", "Rhythm & Blues", "Soul", "Swingbeat", "UK Street Soul"};
+                ArrayAdapter<String> arrayAdapterStyle = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsStylePop);
+                styleSpinner.setAdapter(arrayAdapterStyle);
+
+
+
+
+
+                switch (selectedValue) {
+                    case "Pop":
+
+
+                     arrayAdapterStyle= new ArrayAdapter<String >(getApplicationContext(),android.R.layout.simple_spinner_item,itemsStylePop);
+                     styleSpinner.setAdapter(arrayAdapterStyle);
+
+                     styleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                         @Override
+                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                             String selectedValue = parent.getItemAtPosition(position).toString();
+                         }
+
+                         @Override
+                         public void onNothingSelected(AdapterView<?> parent) {
+
+                         }
+                     });
+
+
+                        break;
+
+                    case "Electronic":
+
+
+                        arrayAdapterStyle= new ArrayAdapter<String >(getApplicationContext(),android.R.layout.simple_spinner_item,itemsStyleElectronic);
+                        styleSpinner.setAdapter(arrayAdapterStyle);
+
+
+
+                        styleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                                String selectedValue = parent.getItemAtPosition(position).toString();
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+
+
+                        break;
+
+                    case "Funk/Soul":
+
+                        arrayAdapterStyle= new ArrayAdapter<String >(getApplicationContext(),android.R.layout.simple_spinner_item,itemsStyleFunkSoul);
+                        styleSpinner.setAdapter(arrayAdapterStyle);
+
+
+                        styleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                                String selectedValue = parent.getItemAtPosition(position).toString();
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+
+
+                        break;
+
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
