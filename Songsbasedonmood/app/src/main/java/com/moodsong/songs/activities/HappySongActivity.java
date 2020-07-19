@@ -105,14 +105,12 @@ public class HappySongActivity extends AppCompatActivity {
     private void GetHappySongsPagination(){
 
 
-
         try {
 
 
-
-            String nrTracks = getIntent().getStringExtra("NumberofTracks");
-            String genre = getIntent().getStringExtra("Genre");
-            String year = getIntent().getStringExtra("Year");
+            int nrTracks = getIntent().getIntExtra("SELECTED_NR_TRACKS",0);
+            String genre = getIntent().getStringExtra("SELECTED_GENRE");
+            int year = getIntent().getIntExtra("SELECTED_YEAR",0);
 
             Toast.makeText(this,nrTracks+genre+year,Toast.LENGTH_LONG).show();
 
@@ -184,7 +182,7 @@ public class HappySongActivity extends AppCompatActivity {
 
 
             SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-            int randomResult2=sharedPreferences.getInt(TEXT,0);
+            int randomResultPage=sharedPreferences.getInt(TEXT,0);
 
 
             RecyclerView recyclerView= findViewById(R.id.recyclerView);
@@ -194,7 +192,7 @@ public class HappySongActivity extends AppCompatActivity {
             recyclerView.setAdapter(happySongAdapter);
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
-            Call<Example> call =songsApi.getSongsExampleInfo(25,2019,randomResult2,"pop",KEY,SECRET);
+            Call<Example> call =songsApi.getSongsExampleInfo(25,2019,randomResultPage,"pop",KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override

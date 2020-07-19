@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     boolean showFirst = true;
     Vokaturi vokaturi;
+
+    int selectedNrTracks;
+    int selectedYear;
+    String selectedGenre;
 
 
     @Override
@@ -319,6 +324,8 @@ public class MainActivity extends AppCompatActivity {
     private void HappyFunction() {
 
 
+
+
         ViewGroup viewGroup = findViewById(android.R.id.content);
 
         View dialogView = LayoutInflater.from(this).inflate(R.layout.config_dialog, viewGroup, false);
@@ -346,11 +353,7 @@ public class MainActivity extends AppCompatActivity {
                      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-                         Integer selectedTracks = Integer.valueOf(parent.getItemAtPosition(position).toString());
-
-               /* Intent intentNumberOfTracks= new Intent(MainActivity.this,HappySongActivity.class);
-                intentNumberOfTracks.putExtra("NumberofTracks",selectedTracks);
-                startActivity(intentNumberOfTracks);*/
+                          selectedNrTracks = Integer.parseInt(parent.getItemAtPosition(position).toString());
 
 
                      }
@@ -374,11 +377,9 @@ public class MainActivity extends AppCompatActivity {
                      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-                         Integer selectedYear = Integer.valueOf(parent.getItemAtPosition(position).toString());
+                          selectedYear = Integer.parseInt(parent.getItemAtPosition(position).toString());
 
-               /* Intent intentYear= new Intent(MainActivity.this,HappySongActivity.class);
-                intentYear.putExtra("Year",selectedYear);
-                startActivity(intentYear);*/
+
 
 
 
@@ -393,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                  //Genre
-                 SearchableSpinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
+                 final SearchableSpinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
                  genreSpinner.setTitle("Set genre");
                  String[] itemsGenre = {"Pop", "Electronic", "Funk/Soul"};
                  final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsGenre);
@@ -404,22 +405,44 @@ public class MainActivity extends AppCompatActivity {
                      @Override
                      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                         String selectedGenre = parent.getItemAtPosition(position).toString();
-
-
-                         Intent intentGenre= new Intent(MainActivity.this,HappySongActivity.class);
-                         intentGenre.putExtra("Genre",selectedGenre);
-                         startActivity(intentGenre);
+                          selectedGenre = parent.getItemAtPosition(position).toString();
 
 
 
                      }
 
 
-
-
                      @Override
                      public void onNothingSelected(AdapterView<?> parent) {
+
+                     }
+                 });
+
+
+
+
+                 Button buttonSearch=alertDialog.findViewById(R.id.buttonSearch);
+
+                 buttonSearch.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+
+
+                         try {
+                             Intent intent= new Intent(MainActivity.this,HappySongActivity.class);
+                             intent.putExtra("SELECTED_NR_TRACKS",selectedNrTracks);
+                             intent.putExtra("SELECTED_YEAR",selectedYear);
+                             intent.putExtra("SELECTED_GENRE",selectedGenre);
+                             startActivity(intent);
+
+                             alertDialog.dismiss();
+
+                         }catch (Exception ex){
+
+                             System.out.println(ex.getMessage());
+                         }
+                        // Toast.makeText(MainActivity.this,selectedNrTracks+"**"+selectedYear+"**"+selectedGenre,Toast.LENGTH_LONG).show();
+
 
                      }
                  });
