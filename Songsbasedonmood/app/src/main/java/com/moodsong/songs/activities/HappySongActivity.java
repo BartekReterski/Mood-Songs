@@ -40,7 +40,8 @@ public class HappySongActivity extends AppCompatActivity {
     public  static  final  String KEY= "pSKPIAPwGJmfkjDXBTAF";
     public  static  final  String SECRET= "xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz";
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TEXT ="test";
+    public static final String RANDOM_PAGE ="test";
+
 
 
     @Override
@@ -108,9 +109,9 @@ public class HappySongActivity extends AppCompatActivity {
         try {
 
 
-            int nrTracks = getIntent().getIntExtra("SELECTED_NR_TRACKS",0);
-            String genre = getIntent().getStringExtra("SELECTED_GENRE");
-            int year = getIntent().getIntExtra("SELECTED_YEAR",0);
+            final int nrTracks = getIntent().getIntExtra("SELECTED_NR_TRACKS",0);
+            final String genre = getIntent().getStringExtra("SELECTED_GENRE");
+            final int year = getIntent().getIntExtra("SELECTED_YEAR",0);
 
             Toast.makeText(this,nrTracks+genre+year,Toast.LENGTH_LONG).show();
 
@@ -119,7 +120,7 @@ public class HappySongActivity extends AppCompatActivity {
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
 
-            Call<Example> call = songsApi.getSongsExamplePagination(25,2019,"pop",KEY,SECRET);
+            Call<Example> call = songsApi.getSongsExamplePagination(nrTracks,year,genre,KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override
@@ -143,7 +144,7 @@ public class HappySongActivity extends AppCompatActivity {
                             SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
                             SharedPreferences.Editor editor= sharedPreferences.edit();
 
-                            editor.putInt(TEXT,randomResult1);
+                            editor.putInt(RANDOM_PAGE,randomResult1);
                             editor.apply();
 
 
@@ -173,6 +174,12 @@ public class HappySongActivity extends AppCompatActivity {
 
 
         try{
+
+            final int nrTracks = getIntent().getIntExtra("SELECTED_NR_TRACKS",0);
+            final String genre = getIntent().getStringExtra("SELECTED_GENRE");
+            final int year = getIntent().getIntExtra("SELECTED_YEAR",0);
+
+
             final AlertDialog alertDialog = new SpotsDialog.Builder()
                     .setContext(HappySongActivity.this)
                     .build();
@@ -182,7 +189,7 @@ public class HappySongActivity extends AppCompatActivity {
 
 
             SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-            int randomResultPage=sharedPreferences.getInt(TEXT,0);
+            int randomResultPage=sharedPreferences.getInt(RANDOM_PAGE,0);
 
 
             RecyclerView recyclerView= findViewById(R.id.recyclerView);
@@ -192,7 +199,7 @@ public class HappySongActivity extends AppCompatActivity {
             recyclerView.setAdapter(happySongAdapter);
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
-            Call<Example> call =songsApi.getSongsExampleInfo(25,2019,randomResultPage,"pop",KEY,SECRET);
+            Call<Example> call =songsApi.getSongsExampleInfo(nrTracks,year,randomResultPage,genre,KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override
