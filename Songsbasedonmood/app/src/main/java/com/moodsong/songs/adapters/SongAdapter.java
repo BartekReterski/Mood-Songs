@@ -10,24 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.moodsong.songs.Models.Example;
 import com.moodsong.songs.Models.Result;
 import com.moodsong.songs.R;
-import com.moodsong.songs.activities.HappySongActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HappySongAdapter extends RecyclerView.Adapter<HappySongAdapter.CustomViewHolder> {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.CustomViewHolder> {
 
     private List<Result> dataList;
     private Context context;
 
-    public HappySongAdapter(Context context){
+    public SongAdapter(Context context){
 
         dataList= new ArrayList<>();
         this.context=context;

@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_350sdp"
         android:orientation="vertical"
         android:padding="@dimen/_14sdp">
 
@@ -26,23 +26,24 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="Genre"
             android:textColor="@color/colorBlack"
             android:textStyle="bold">
 
         </TextView>
+
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/spinnerGenre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"/>
+            android:layout_marginTop="@dimen/_5sdp" />
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="Release year"
             android:textColor="@color/colorBlack"
             android:textStyle="bold" />
@@ -50,13 +51,13 @@
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/spinnerYear"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="Set number of propositions"
             android:textColor="@color/colorBlack"
             android:textStyle="bold" />
@@ -64,15 +65,15 @@
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/spinnerPropositionPerPage"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp" />
 
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/button_background"
             android:text="Search"
             android:textColor="#f5f5f5" />

@@ -54,7 +54,7 @@
                 android:layout_marginStart="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_toEndOf="@id/songThumb"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/rounded_corners"
                 android:paddingLeft="@dimen/_12sdp"
                 android:paddingRight="@dimen/_12sdp"
                 android:text="Pop/J-Pop"

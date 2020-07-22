@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,10 +17,9 @@ import com.moodsong.songs.Client.SongsClient;
 import com.moodsong.songs.Models.Example;
 import com.moodsong.songs.Models.Result;
 import com.moodsong.songs.R;
-import com.moodsong.songs.adapters.HappySongAdapter;
+import com.moodsong.songs.adapters.SongAdapter;
 import com.moodsong.songs.apiInterface.SongsApi;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,17 +28,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HappySongActivity extends AppCompatActivity {
+public class SongActivity extends AppCompatActivity {
 
 
-    int randomResult1;
+
 
     //intent z MainActivity-> przesłanie danych z formularza -> a nastepnie przeslanie ich do GetHappySongInfo wraz z randomResult zamiast per_pages
 
     public  static  final  String KEY= "pSKPIAPwGJmfkjDXBTAF";
     public  static  final  String SECRET= "xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz";
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String RANDOM_PAGE ="test";
+
 
 
 
@@ -52,7 +49,7 @@ public class HappySongActivity extends AppCompatActivity {
 
         InternetConnectionCheck();
         GetHappySongsPagination();
-        GetHappySongInfo();
+        //GetHappySongInfo();
 
     }
 
@@ -115,9 +112,6 @@ public class HappySongActivity extends AppCompatActivity {
 
             Toast.makeText(this,nrTracks+genre+year,Toast.LENGTH_LONG).show();
 
-
-
-
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
 
             Call<Example> call = songsApi.getSongsExamplePagination(nrTracks,year,genre,KEY,SECRET);
@@ -134,25 +128,30 @@ public class HappySongActivity extends AppCompatActivity {
 
                             //String perPages= String.valueOf(example.getPagination().getPages());
 
-                            //generowanie losowej strony w pagination
-                            Random r = new Random();
-                            int low = 1;
-                            int high = example.getPagination().getPages();
-                            randomResult1 = r.nextInt(high - low) + low;
+                            //obostrzenie zeby nie wywalało jak nic nie ma
+                            try{
+
+                                //generowanie losowej strony w pagination
+                                Random r = new Random();
+                                int low = 1;
+                                int high = example.getPagination().getPages();
+                                int randomResult = r.nextInt(high - low) + low;
 
 
-                            SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-                            SharedPreferences.Editor editor= sharedPreferences.edit();
+                                GetHappySongInfo(randomResult);
 
-                            editor.putInt(RANDOM_PAGE,randomResult1);
-                            editor.apply();
+                                TextView textViewHelper = findViewById(R.id.textViewHelper);
+                                textViewHelper.setText(String.valueOf(randomResult));
 
+                            }catch (Exception ex){
+
+
+                            }
 
 
 
                         }
                     }
-
 
                 }
                 @Override
@@ -170,36 +169,40 @@ public class HappySongActivity extends AppCompatActivity {
     }
 
 
-    private void  GetHappySongInfo(){
+    private void  GetHappySongInfo(int randomResult){
 
 
         try{
+
+
 
             final int nrTracks = getIntent().getIntExtra("SELECTED_NR_TRACKS",0);
             final String genre = getIntent().getStringExtra("SELECTED_GENRE");
             final int year = getIntent().getIntExtra("SELECTED_YEAR",0);
 
 
+
+            Toast.makeText(getApplicationContext(),String.valueOf(randomResult),Toast.LENGTH_LONG).show();
+
+
             final AlertDialog alertDialog = new SpotsDialog.Builder()
-                    .setContext(HappySongActivity.this)
+                    .setContext(SongActivity.this)
                     .build();
             alertDialog.setMessage("Loading suggestion list");
             alertDialog.setCancelable(false);
             alertDialog.show();
 
 
-            SharedPreferences sharedPreferences= getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-            int randomResultPage=sharedPreferences.getInt(RANDOM_PAGE,0);
 
 
             RecyclerView recyclerView= findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            final HappySongAdapter happySongAdapter= new HappySongAdapter(HappySongActivity.this);
+            final SongAdapter songAdapter= new SongAdapter(SongActivity.this);
 
-            recyclerView.setAdapter(happySongAdapter);
+            recyclerView.setAdapter(songAdapter);
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
-            Call<Example> call =songsApi.getSongsExampleInfo(nrTracks,year,randomResultPage,genre,KEY,SECRET);
+            Call<Example> call =songsApi.getSongsExampleInfo(nrTracks,year,randomResult,genre,KEY,SECRET);
 
             call.enqueue(new Callback<Example>() {
                 @Override
@@ -209,7 +212,12 @@ public class HappySongActivity extends AppCompatActivity {
                     if(response.isSuccessful()& response.body()!=null){
 
                         List<Result> list= response.body().getResults();
-                        happySongAdapter.addResult(list);
+                        Example example= response.body();
+
+
+
+
+                        songAdapter.addResult(list);
                         alertDialog.dismiss();
                     }
 
@@ -227,7 +235,7 @@ public class HappySongActivity extends AppCompatActivity {
 
         }catch (Exception ex){
 
-            Toast.makeText(this,"Something was wrong"+ex.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Something was wrong"+ex.getMessage(),Toast.LENGTH_LONG).show();
         }
 
 
