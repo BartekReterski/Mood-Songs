@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Mood Songs</string>
+
+
+    <string name="credits">
+        <b> Used graphics:\n</b>
+1.                                                      Icons made by [Freepik] from www.flaticon.com\n
+2                                                       Icons made by [Smashicons] from www.flaticon.com\n
+3.	                                                    Icons made by [Pixel perfect] from www.flaticon.com\n
+    </string>
 </resources>
+
+

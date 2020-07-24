@@ -190,6 +190,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.CustomViewHold
     }
 
     //pobranie z listy Result
+
     public  void addResult(List<Result> resultsData){
 
         dataList.addAll(resultsData);

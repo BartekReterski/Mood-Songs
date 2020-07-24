@@ -3,10 +3,14 @@ package com.moodsong.songs.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 import umairayub.madialog.MaDialog;
 import umairayub.madialog.MaDialogListener;
@@ -48,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
     boolean showFirst = true;
     Vokaturi vokaturi;
+    boolean flag= true;
 
     int selectedNrTracks;
     int selectedYear;
     String selectedGenre;
+
 
 
 
@@ -119,39 +125,6 @@ public class MainActivity extends AppCompatActivity {
         ApiImageCalls();
     }
 
-
- /*   @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
-
-            case R.id.darkTheme:
-                if(item.isChecked()){
-                    // If item already checked then unchecked it
-                    item.setChecked(false);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }else{
-                    // If item is unchecked then checked it
-                    item.setChecked(true);
-
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-                }
-                // Update the text view text style
-
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-*/
 
     //zadeklarowanie uprawnień
     private void RuntimePermissions() {
@@ -323,6 +296,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static void disableTouch(final View v, long timeInMiliSec) {
+        v.setEnabled(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                v.setEnabled(true);
+            }
+        }, timeInMiliSec);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     private void HappyFunction() {
 
 
@@ -341,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
                  //numberOfPropositionsSpinner
                  SearchableSpinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
                  NumberOfTrack.setTitle("Set number of propositions on page");
-                 Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+                 Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
                  ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
                  NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
 
@@ -365,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                  //yearSpinner
                  SearchableSpinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
                  yearSpinner.setTitle("Set release year");
-                 Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960, 1959, 1958, 1957, 1956, 1955, 1954, 1953, 1952, 1951, 1950};
+                 Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960};
                  ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsYear);
                  yearSpinner.setAdapter(arrayAdapterYear);
 
@@ -399,23 +383,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                 genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+              genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                  @Override
+                  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                     @Override
-                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                      selectedGenre = parent.getItemAtPosition(position).toString();
+
+                  }
+
+                  @Override
+                  public void onNothingSelected(AdapterView<?> parent) {
+
+                  }
+              });
 
 
-                         selectedGenre = parent.getItemAtPosition(position).toString();
 
-
-                     }
-
-
-                     @Override
-                     public void onNothingSelected(AdapterView<?> parent) {
-
-                     }
-                 });
 
 
 

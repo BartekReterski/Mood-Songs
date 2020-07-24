@@ -1,15 +1,23 @@
 package com.moodsong.songs.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +29,7 @@ import com.moodsong.songs.adapters.SongAdapter;
 import com.moodsong.songs.apiInterface.SongsApi;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import dmax.dialog.SpotsDialog;
@@ -31,25 +40,22 @@ import retrofit2.Response;
 public class SongActivity extends AppCompatActivity {
 
 
-
-
-    //intent z MainActivity-> przesłanie danych z formularza -> a nastepnie przeslanie ich do GetHappySongInfo wraz z randomResult zamiast per_pages
-
     public  static  final  String KEY= "pSKPIAPwGJmfkjDXBTAF";
     public  static  final  String SECRET= "xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz";
 
-
-
+    List<Result> listSongs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_happy_song_layout);
-
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Songs by your mood");
 
         InternetConnectionCheck();
-        GetHappySongsPagination();
-        //GetHappySongInfo();
+        GetSongsPagination();
+
+
+
 
     }
 
@@ -100,7 +106,7 @@ public class SongActivity extends AppCompatActivity {
 
 
     //pobranie ilosci stron z ktorych przedstawiana jest dana playlista
-    private void GetHappySongsPagination(){
+    private void GetSongsPagination(){
 
 
         try {
@@ -136,16 +142,21 @@ public class SongActivity extends AppCompatActivity {
                                 int low = 1;
                                 int high = example.getPagination().getPages();
                                 int randomResult = r.nextInt(high - low) + low;
-
-
-                                GetHappySongInfo(randomResult);
-
                                 TextView textViewHelper = findViewById(R.id.textViewHelper);
                                 textViewHelper.setText(String.valueOf(randomResult));
+
+                                GetSongInfo(randomResult);
 
                             }catch (Exception ex){
 
 
+                                ImageView imageNoSearch= findViewById(R.id.imageNoSearch);
+                                TextView textNoSearch=findViewById(R.id.textViewNoSearch);
+
+                                imageNoSearch.setVisibility(View.VISIBLE);
+                                textNoSearch.setVisibility(View.VISIBLE);
+                                Toast.makeText(getApplicationContext(),"No search result",Toast.LENGTH_LONG).show();
+                                System.out.println(ex.getMessage());
                             }
 
 
@@ -169,7 +180,7 @@ public class SongActivity extends AppCompatActivity {
     }
 
 
-    private void  GetHappySongInfo(int randomResult){
+    private void  GetSongInfo(int randomResult){
 
 
         try{
@@ -195,7 +206,7 @@ public class SongActivity extends AppCompatActivity {
 
 
 
-            RecyclerView recyclerView= findViewById(R.id.recyclerView);
+            final RecyclerView recyclerView= findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             final SongAdapter songAdapter= new SongAdapter(SongActivity.this);
 
@@ -211,14 +222,18 @@ public class SongActivity extends AppCompatActivity {
 
                     if(response.isSuccessful()& response.body()!=null){
 
-                        List<Result> list= response.body().getResults();
-                        Example example= response.body();
+                        listSongs= response.body().getResults();
 
 
 
-
-                        songAdapter.addResult(list);
+                        songAdapter.addResult(listSongs);
                         alertDialog.dismiss();
+
+
+
+
+
+
                     }
 
                 }
@@ -243,4 +258,31 @@ public class SongActivity extends AppCompatActivity {
     }
 
 
-}
+        @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+
+            case R.id.darkTheme:
+
+                Intent intent= new Intent(SongActivity.this,AboutApp.class);
+                startActivity(intent);
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+    }
+
+

@@ -9,6 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SongsClient {
 
     public static final String BASE_URL = "https://api.discogs.com";
+    public  static  final  String KEY= "pSKPIAPwGJmfkjDXBTAF";
+    public  static  final  String SECRET= "xmcybONgQdFMkUAjZwCPmBxPiQOMVuYz";
 
     public static Retrofit retrofit;
 
