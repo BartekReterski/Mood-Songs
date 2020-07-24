@@ -1,7 +1,6 @@
 package com.moodsong.songs.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,7 +46,7 @@ public class SongActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_happy_song_layout);
+        setContentView(R.layout.activity_song_layout);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Songs by your mood");
 
         InternetConnectionCheck();
@@ -229,11 +227,6 @@ public class SongActivity extends AppCompatActivity {
                         songAdapter.addResult(listSongs);
                         alertDialog.dismiss();
 
-
-
-
-
-
                     }
 
                 }
@@ -269,7 +262,7 @@ public class SongActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
 
-            case R.id.darkTheme:
+            case R.id.aboutApp:
 
                 Intent intent= new Intent(SongActivity.this,AboutApp.class);
                 startActivity(intent);

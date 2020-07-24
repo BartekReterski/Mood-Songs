@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean showFirst = true;
     Vokaturi vokaturi;
-    boolean flag= true;
+    Emotion capturedEmotion;
 
     int selectedNrTracks;
     int selectedYear;
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             emotionProbabilities.scaledValues(5);
-            Emotion capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
+            capturedEmotion = Vokaturi.extractEmotion(emotionProbabilities);
             //     Toast.makeText(this, capturedEmotion.toString(), Toast.LENGTH_LONG).show();
 
 
@@ -232,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
             buttonOK.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    CheckYourMood();
                     Toast.makeText(getApplicationContext(), "dasdsadsdsa", Toast.LENGTH_LONG).show();
                 }
             });
@@ -245,6 +247,35 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    private void CheckYourMood(){
+
+        switch (capturedEmotion){
+
+            case Happy:
+                HappyFunction();
+                break;
+            case Neutral:
+                NeutralFunction();
+                break;
+
+            case Sad:
+                SadFunction();
+                break;
+
+            case Angry:
+                AngryFunction();
+                break;
+
+            case Feared:
+                FearFunction();
+                break;
+
+
+        }
+    }
+
 
 
     private void ApiImageCalls() {
@@ -296,17 +327,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void disableTouch(final View v, long timeInMiliSec) {
-        v.setEnabled(false);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                v.setEnabled(true);
-            }
-        }, timeInMiliSec);
-    }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void HappyFunction() {
 
 
@@ -374,6 +395,8 @@ public class MainActivity extends AppCompatActivity {
                  });
 
 
+        try {
+
                  //Genre
                  final SearchableSpinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
                  genreSpinner.setTitle("Set genre");
@@ -383,23 +406,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-              genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                  @Override
-                  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                      selectedGenre = parent.getItemAtPosition(position).toString();
-
-                  }
-
-                  @Override
-                  public void onNothingSelected(AdapterView<?> parent) {
-
-                  }
-              });
 
 
 
 
+                     genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                         @Override
+                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                             selectedGenre = parent.getItemAtPosition(position).toString();
+
+                         }
+
+                         @Override
+                         public void onNothingSelected(AdapterView<?> parent) {
+
+                         }
+                     });
+
+                 }catch (Exception ex){
+
+                 System.out.println(ex.getMessage());
+
+                 }
 
 
 
@@ -431,6 +460,21 @@ public class MainActivity extends AppCompatActivity {
 
 
              }
+
+
+
+    private void FearFunction() {
+    }
+
+    private void AngryFunction() {
+    }
+
+    private void SadFunction() {
+    }
+
+    private void NeutralFunction() {
+    }
+
 
 
 }

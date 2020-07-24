@@ -15,9 +15,23 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.AboutApp"></activity>
-        <activity android:name=".activities.SongActivity" />
         <activity android:name=".activities.MainActivity">
+            android:screenOrientation="portrait"
+        </activity>
+        <activity android:name=".activities.AboutApp">
+
+            android:screenOrientation="portrait"
+        </activity>
+
+        <activity android:name=".activities.SongActivity" >
+
+            android:screenOrientation="portrait"
+        </activity>
+        <activity android:name=".activities.SplashScreen" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+            android:screenOrientation="portrait"
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

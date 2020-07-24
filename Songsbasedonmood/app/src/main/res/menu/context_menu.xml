@@ -17,7 +17,7 @@
     -->
 
     <item
-        android:id="@+id/darkTheme"
+        android:id="@+id/aboutApp"
         android:title="About app"
         app:showAsAction="never"
         android:orderInCategory="1"
