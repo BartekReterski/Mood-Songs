@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.anychart.AnyChart;
@@ -27,6 +30,12 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pyramid;
 import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.moodsong.songs.R;
@@ -34,13 +43,8 @@ import com.projects.alshell.vokaturi.Emotion;
 import com.projects.alshell.vokaturi.EmotionProbabilities;
 import com.projects.alshell.vokaturi.Vokaturi;
 import com.projects.alshell.vokaturi.VokaturiException;
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
-import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 import umairayub.madialog.MaDialog;
 import umairayub.madialog.MaDialogListener;
@@ -48,7 +52,7 @@ import umairayub.madialog.MaDialogListener;
 
 import static com.projects.alshell.vokaturi.Vokaturi.logD;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     boolean showFirst = true;
     Vokaturi vokaturi;
@@ -59,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
     String selectedGenre;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         RuntimePermissions();
+
+
+        //inicjalizacja reklam
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        AdView adView= findViewById(R.id.adView);
+        AdRequest adRequest= new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
 
 
         final ImageView recordVoiceMood = findViewById(R.id.recordVoice);
@@ -90,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     recordVoiceMood.setImageResource(R.drawable.play);
 
                     StopVoiceAlgorithm();
+
                     showFirst = true;
 
 
@@ -124,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         ApiImageCalls();
     }
+
 
 
     //zadeklarowanie uprawnień
@@ -170,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
 
+
             vokaturi = Vokaturi.getInstance(getApplicationContext());
 
             EmotionProbabilities emotionProbabilities = vokaturi.stopListeningAndAnalyze();
@@ -203,9 +221,15 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.show();
 
 
+
+
+
             //pyramid wykres
 
             AnyChartView anyChartView = alertDialog.findViewById(R.id.piechart);
+            ProgressBar progressBar= alertDialog.findViewById(R.id.progress_chart_Dialog);
+            anyChartView.setProgressBar(progressBar);
+
 
             String[] moods = {"Neutrality", "Happiness", "Sadness", "Anger", "Fear"};
             double[] values = {neutrality, happiness, sadness, anger, fear};
@@ -234,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     CheckYourMood();
-                    Toast.makeText(getApplicationContext(), "dasdsadsdsa", Toast.LENGTH_LONG).show();
+
                 }
             });
 
@@ -248,28 +272,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+//przypisanie posczegolnych nastrojow z analizy głosu do metod
     private void CheckYourMood(){
 
         switch (capturedEmotion){
 
             case Happy:
                 HappyFunction();
+                Toast.makeText(getApplicationContext(), "Happy", Toast.LENGTH_LONG).show();
                 break;
             case Neutral:
                 NeutralFunction();
+                Toast.makeText(getApplicationContext(), "Neutral", Toast.LENGTH_LONG).show();
                 break;
 
             case Sad:
                 SadFunction();
+                Toast.makeText(getApplicationContext(), "Sad", Toast.LENGTH_LONG).show();
                 break;
 
             case Angry:
                 AngryFunction();
+                Toast.makeText(getApplicationContext(), "Angry", Toast.LENGTH_LONG).show();
                 break;
 
             case Feared:
                 FearFunction();
+                Toast.makeText(getApplicationContext(), "Fear", Toast.LENGTH_LONG).show();
                 break;
 
 
@@ -277,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+//onclicki do emoji
     private void ApiImageCalls() {
 
         ImageView imageNeutral = findViewById(R.id.imageNeutral);
@@ -291,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                NeutralFunction();
             }
         });
 
@@ -308,12 +338,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                SadFunction();
             }
         });
 
         imageAngry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AngryFunction();
 
             }
         });
@@ -322,12 +355,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                FearFunction();
+
             }
         });
     }
 
 
 
+
+    //funckje obslugujące nastroje
     private void HappyFunction() {
 
 
@@ -344,10 +381,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                  //numberOfPropositionsSpinner
-                 SearchableSpinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
-                 NumberOfTrack.setTitle("Set number of propositions on page");
+                 Spinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
                  Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
                  ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
+                 arrayAdapterPropositionsSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                  NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
 
                  NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -368,10 +405,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                  //yearSpinner
-                 SearchableSpinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
-                 yearSpinner.setTitle("Set release year");
+                 Spinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
                  Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960};
                  ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsYear);
+                 arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                  yearSpinner.setAdapter(arrayAdapterYear);
 
                  yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -380,11 +417,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                           selectedYear = Integer.parseInt(parent.getItemAtPosition(position).toString());
-
-
-
-
-
 
                      }
 
@@ -395,40 +427,32 @@ public class MainActivity extends AppCompatActivity {
                  });
 
 
-        try {
+
 
                  //Genre
-                 final SearchableSpinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
-                 genreSpinner.setTitle("Set genre");
+                 final Spinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
                  String[] itemsGenre = {"Pop", "Electronic", "Funk/Soul"};
                  final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsGenre);
+                 arrayAdapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                  genreSpinner.setAdapter(arrayAdapterGenre);
 
 
 
 
+                 genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                     @Override
+                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                         selectedGenre=parent.getItemAtPosition(position).toString();
+                     }
+
+                     @Override
+                     public void onNothingSelected(AdapterView<?> parent) {
+
+                     }
+                 });
 
 
-
-                     genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                         @Override
-                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                             selectedGenre = parent.getItemAtPosition(position).toString();
-
-                         }
-
-                         @Override
-                         public void onNothingSelected(AdapterView<?> parent) {
-
-                         }
-                     });
-
-                 }catch (Exception ex){
-
-                 System.out.println(ex.getMessage());
-
-                 }
 
 
 
@@ -464,15 +488,486 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void FearFunction() {
+
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.config_dialog, viewGroup, false);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
+        //numberOfPropositionsSpinner
+        Spinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
+        Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
+        arrayAdapterPropositionsSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
+
+        NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedNrTracks = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //yearSpinner
+        Spinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
+        Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960};
+        ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsYear);
+        arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(arrayAdapterYear);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedYear = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+        //Genre
+        final Spinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
+        String[] itemsGenre = {"Reggae", "Jazz", "Classical","Blues"};
+        final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsGenre);
+        arrayAdapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genreSpinner.setAdapter(arrayAdapterGenre);
+
+
+
+
+        genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedGenre=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+        Button buttonSearch=alertDialog.findViewById(R.id.buttonSearch);
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    Intent intent= new Intent(MainActivity.this, SongActivity.class);
+                    intent.putExtra("SELECTED_NR_TRACKS",selectedNrTracks);
+                    intent.putExtra("SELECTED_YEAR",selectedYear);
+                    intent.putExtra("SELECTED_GENRE",selectedGenre);
+                    startActivity(intent);
+
+                    alertDialog.dismiss();
+
+                }catch (Exception ex){
+
+                    System.out.println(ex.getMessage());
+                }
+
+
+
+            }
+        });
+
+
     }
+
 
     private void AngryFunction() {
+
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.config_dialog, viewGroup, false);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
+        //numberOfPropositionsSpinner
+        Spinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
+        Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
+        arrayAdapterPropositionsSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
+
+        NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedNrTracks = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //yearSpinner
+        Spinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
+        Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960};
+        ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsYear);
+        arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(arrayAdapterYear);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedYear = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+        //Genre
+        final Spinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
+        String[] itemsGenre = {"Rock", "Hip Hop"};
+        final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsGenre);
+        arrayAdapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genreSpinner.setAdapter(arrayAdapterGenre);
+
+
+
+
+        genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedGenre=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+        Button buttonSearch=alertDialog.findViewById(R.id.buttonSearch);
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    Intent intent= new Intent(MainActivity.this, SongActivity.class);
+                    intent.putExtra("SELECTED_NR_TRACKS",selectedNrTracks);
+                    intent.putExtra("SELECTED_YEAR",selectedYear);
+                    intent.putExtra("SELECTED_GENRE",selectedGenre);
+                    startActivity(intent);
+
+                    alertDialog.dismiss();
+
+                }catch (Exception ex){
+
+                    System.out.println(ex.getMessage());
+                }
+
+
+
+            }
+        });
+
+
     }
+
 
     private void SadFunction() {
+
+
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.config_dialog, viewGroup, false);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
+        //numberOfPropositionsSpinner
+        Spinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
+        Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
+        arrayAdapterPropositionsSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
+
+        NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedNrTracks = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //yearSpinner
+        Spinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
+        Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960};
+        ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsYear);
+        arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(arrayAdapterYear);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedYear = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+        //Genre
+        final Spinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
+        String[] itemsGenre = {"Stage & Screen", "Classical", "Blues"};
+        final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsGenre);
+        arrayAdapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genreSpinner.setAdapter(arrayAdapterGenre);
+
+
+
+
+        genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedGenre=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+        Button buttonSearch=alertDialog.findViewById(R.id.buttonSearch);
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    Intent intent= new Intent(MainActivity.this, SongActivity.class);
+                    intent.putExtra("SELECTED_NR_TRACKS",selectedNrTracks);
+                    intent.putExtra("SELECTED_YEAR",selectedYear);
+                    intent.putExtra("SELECTED_GENRE",selectedGenre);
+                    startActivity(intent);
+
+                    alertDialog.dismiss();
+
+                }catch (Exception ex){
+
+                    System.out.println(ex.getMessage());
+                }
+
+
+
+            }
+        });
+
+
     }
 
+
     private void NeutralFunction() {
+
+
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.config_dialog, viewGroup, false);
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
+        //numberOfPropositionsSpinner
+        Spinner NumberOfTrack = alertDialog.findViewById(R.id.spinnerPropositionPerPage);
+        Integer[] itemsPropositionsSpinner = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        ArrayAdapter<Integer> arrayAdapterPropositionsSpinner = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsPropositionsSpinner);
+        arrayAdapterPropositionsSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        NumberOfTrack.setAdapter(arrayAdapterPropositionsSpinner);
+
+        NumberOfTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedNrTracks = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //yearSpinner
+        Spinner yearSpinner = alertDialog.findViewById(R.id.spinnerYear);
+        Integer[] itemsYear = {2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980, 1979, 1978, 1977, 1976, 1975, 1974, 1973, 1972, 1971, 1970, 1969, 1968, 1967, 1966, 1965, 1964, 1963, 1962, 1961, 1960};
+        ArrayAdapter<Integer> arrayAdapterYear = new ArrayAdapter<Integer>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsYear);
+        arrayAdapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearSpinner.setAdapter(arrayAdapterYear);
+
+        yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+                selectedYear = Integer.parseInt(parent.getItemAtPosition(position).toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+        //Genre
+        final Spinner genreSpinner = alertDialog.findViewById(R.id.spinnerGenre);
+        String[] itemsGenre = {"Pop", "Rock", "Electronic"};
+        final ArrayAdapter<String> arrayAdapterGenre = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, itemsGenre);
+        arrayAdapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genreSpinner.setAdapter(arrayAdapterGenre);
+
+
+
+
+        genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedGenre=parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+        Button buttonSearch=alertDialog.findViewById(R.id.buttonSearch);
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                try {
+                    Intent intent= new Intent(MainActivity.this, SongActivity.class);
+                    intent.putExtra("SELECTED_NR_TRACKS",selectedNrTracks);
+                    intent.putExtra("SELECTED_YEAR",selectedYear);
+                    intent.putExtra("SELECTED_GENRE",selectedGenre);
+                    startActivity(intent);
+
+                    alertDialog.dismiss();
+
+                }catch (Exception ex){
+
+                    System.out.println(ex.getMessage());
+                }
+
+
+
+            }
+        });
+
+
+
+
     }
 
 

@@ -34,7 +34,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Song based your mood"
+        android:text="Songs based on your mood"
         android:textColor="@color/colorWhite"
         android:layout_marginTop="@dimen/_10sdp"
         android:textSize="@dimen/_15sdp"

@@ -33,7 +33,7 @@
 
         </TextView>
 
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        <Spinner
             android:id="@+id/spinnerGenre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold" />
 
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        <Spinner
             android:id="@+id/spinnerYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold" />
 
-        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        <Spinner
             android:id="@+id/spinnerPropositionPerPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
