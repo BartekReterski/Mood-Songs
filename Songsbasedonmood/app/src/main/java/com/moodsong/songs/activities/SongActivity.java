@@ -72,7 +72,6 @@ public class SongActivity extends AppCompatActivity {
         adView.loadAd(adRequest);
 
 
-
     }
 
 //sprawdzanie polaczenia z internetem
@@ -132,7 +131,7 @@ public class SongActivity extends AppCompatActivity {
             final String genre = getIntent().getStringExtra("SELECTED_GENRE");
             final int year = getIntent().getIntExtra("SELECTED_YEAR",0);
 
-            Toast.makeText(this,nrTracks+genre+year,Toast.LENGTH_LONG).show();
+
 
             SongsApi songsApi= SongsClient.getRetrofitClient().create(SongsApi.class);
 
@@ -143,7 +142,7 @@ public class SongActivity extends AppCompatActivity {
                 public void onResponse(Call<Example> call, Response<Example> response) {
 
                     if (response.isSuccessful()) {
-                        //Toast.makeText(getBaseContext(), "OK"+response.message(), Toast.LENGTH_LONG).show();
+
                         if (response.body() != null) {
 
                             Example example = response.body();
@@ -158,8 +157,8 @@ public class SongActivity extends AppCompatActivity {
                                 int low = 1;
                                 int high = example.getPagination().getPages();
                                 int randomResult = r.nextInt(high - low) + low;
-                                TextView textViewHelper = findViewById(R.id.textViewHelper);
-                                textViewHelper.setText(String.valueOf(randomResult));
+                               /* TextView textViewHelper = findViewById(R.id.textViewHelper);
+                                textViewHelper.setText(String.valueOf(randomResult));*/
 
                                 GetSongInfo(randomResult);
 
@@ -209,7 +208,7 @@ public class SongActivity extends AppCompatActivity {
 
 
 
-            Toast.makeText(getApplicationContext(),String.valueOf(randomResult),Toast.LENGTH_LONG).show();
+        //    Toast.makeText(getApplicationContext(),String.valueOf(randomResult),Toast.LENGTH_LONG).show();
 
 
             final AlertDialog alertDialog = new SpotsDialog.Builder()

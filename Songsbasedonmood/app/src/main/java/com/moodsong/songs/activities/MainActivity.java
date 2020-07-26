@@ -45,6 +45,8 @@ import com.projects.alshell.vokaturi.Vokaturi;
 import com.projects.alshell.vokaturi.VokaturiException;
 import java.util.ArrayList;
 import java.util.List;
+
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 import umairayub.madialog.MaDialog;
 import umairayub.madialog.MaDialogListener;
@@ -81,9 +83,8 @@ public class MainActivity extends AppCompatActivity{
         });
 
         AdView adView= findViewById(R.id.adView);
-        AdRequest adRequest= new AdRequest.Builder().build();
+        final AdRequest adRequest= new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-
 
 
         final ImageView recordVoiceMood = findViewById(R.id.recordVoice);
@@ -102,7 +103,9 @@ public class MainActivity extends AppCompatActivity{
                     showFirst = false;
                 } else {
 
+
                     recordVoiceMood.setImageResource(R.drawable.play);
+
 
                     StopVoiceAlgorithm();
 
@@ -121,8 +124,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
 
                 new MaDialog.Builder(MainActivity.this)
-                        .setTitle("Detect your voice")
-                        .setMessage("This is only sample- reszte trzeba wymyslec  ")
+                        .setTitle("Record your voice")
+                        .setMessage("Record your voice so the application may suggest you the most appropriate songs according to your current mood. \n NOTE: The voice analysis is only a suggestion. This feature should not be treated like a determinant.")
                         .setPositiveButtonText("ok")
                         .setButtonOrientation(LinearLayout.HORIZONTAL)
 
@@ -217,7 +220,7 @@ public class MainActivity extends AppCompatActivity{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
             builder.setView(dialogView);
-            AlertDialog alertDialog = builder.create();
+            final AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
 
@@ -259,6 +262,8 @@ public class MainActivity extends AppCompatActivity{
 
                     CheckYourMood();
 
+                    alertDialog.dismiss();
+
                 }
             });
 
@@ -279,26 +284,26 @@ public class MainActivity extends AppCompatActivity{
 
             case Happy:
                 HappyFunction();
-                Toast.makeText(getApplicationContext(), "Happy", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Happy", Toast.LENGTH_LONG).show();
                 break;
             case Neutral:
                 NeutralFunction();
-                Toast.makeText(getApplicationContext(), "Neutral", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Neutral", Toast.LENGTH_LONG).show();
                 break;
 
             case Sad:
                 SadFunction();
-                Toast.makeText(getApplicationContext(), "Sad", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Sad", Toast.LENGTH_LONG).show();
                 break;
 
             case Angry:
                 AngryFunction();
-                Toast.makeText(getApplicationContext(), "Angry", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Angry", Toast.LENGTH_LONG).show();
                 break;
 
             case Feared:
                 FearFunction();
-                Toast.makeText(getApplicationContext(), "Fear", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Fear", Toast.LENGTH_LONG).show();
                 break;
 
 
